@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 from model import vae,decoder
@@ -21,7 +21,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 # # Set paths
 
-# In[3]:
+# In[2]:
 
 
 ENCODED_DATA_PATH = 'models/data/lv.npy'
@@ -31,7 +31,7 @@ DANCENET_PATH = 'models/weights/gendance.h5'
 
 # # Load encoded data
 
-# In[4]:
+# In[3]:
 
 
 data = np.load(ENCODED_DATA_PATH)
@@ -40,7 +40,7 @@ print(data.shape)
 
 # # Normalize data
 
-# In[5]:
+# In[4]:
 
 
 data = np.array(data).reshape(-1,128)
@@ -49,7 +49,7 @@ scaler = scaler.fit(data)
 data =  scaler.transform(data)
 
 
-# In[6]:
+# In[5]:
 
 
 numComponents = 24
@@ -58,7 +58,7 @@ outputDim = 128
 
 # # LSTM + MDN 
 
-# In[7]:
+# In[6]:
 
 
 inputs = Input(shape=(128,))
@@ -75,14 +75,14 @@ model = Model(inputs=inputs,outputs=outputs)
 print(model.summary())
 
 
-# In[8]:
+# In[7]:
 
 
 opt = adam(lr=0.0005)
 model.compile(loss=mdn.get_mixture_loss_func(outputDim,numComponents),optimizer=opt)
 
 
-# In[9]:
+# In[8]:
 
 
 train = False #change to True to train from scratch
@@ -97,7 +97,7 @@ if train:
 
 # # Load weights
 
-# In[10]:
+# In[9]:
 
 
 vae.load_weights(VAE_PATH)
@@ -106,7 +106,7 @@ model.load_weights(DANCENET_PATH)
 
 # # Generate Video
 
-# In[11]:
+# In[10]:
 
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
